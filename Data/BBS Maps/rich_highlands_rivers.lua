@@ -194,7 +194,7 @@ function GeneratePlotTypes()
 	-- local lakes = 15;
 	local lakes = 25;
 	-- local lake_grain = 3;
-	local lake_grain = 5;
+	local lake_grain = 4;
 	
 	local fracFlags = {};
 	
