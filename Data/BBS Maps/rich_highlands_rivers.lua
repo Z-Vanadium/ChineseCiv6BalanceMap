@@ -713,6 +713,8 @@ function AddRivers()
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTHWEST);
 						elseif (pNEPlot:IsWater() and not pEPlot:IsWater()  and not pSEPlot:IsWater() and not pSWPlot:IsWater()) then
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTH);
+						else 
+							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTH);
 						end
 					end
 				end
