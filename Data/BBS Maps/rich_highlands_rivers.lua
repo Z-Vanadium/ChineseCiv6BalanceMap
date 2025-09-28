@@ -730,44 +730,39 @@ function AddInlandRivers()
         
         local plot = Map.GetPlotByIndex(i);
 
-		local TERRAIN_TYPE_GRASS = 0;
-		local TERRAIN_TYPE_GRASS_HILLS = 1;
-		local TERRAIN_TYPE_PLAINS = 3;
-		local TERRAIN_TYPE_PLAINS_HILLS = 4;
-		local TERRAIN_TYPE_DESERT = 6;
-		local TERRAIN_TYPE_DESERT_HILLS = 7;
-		local TERRAIN_TYPE_TUNDRA = 9;
-		local TERRAIN_TYPE_TUNDRA_HILLS = 10;
-		local TERRAIN_TYPE_SNOW = 12;
-		local TERRAIN_TYPE_SNOW_HILLS = 13;
-		local TERRAIN_TYPE_COAST = 15;
-		local TERRAIN_TYPE_OCEAN = 16;
-        
-        -- 在丘陵上生成内陆河流
-        if plot:GetTerrainType() == TERRAIN_TYPE_GRASS_HILLS
-		or plot:GetTerrainType() == TERRAIN_TYPE_PLAINS_HILLS
-		or plot:GetTerrainType() == TERRAIN_TYPE_DESERT_HILLS
-		or plot:GetTerrainType() == TERRAIN_TYPE_TUNDRA_HILLS
-		or plot:GetTerrainType() == TERRAIN_TYPE_SNOW_HILLS
-		then
-            if plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false then
-                -- 30% 几率生成河流
-                if TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30 then
-                    -- 随机选择一个流向
-                    local directions = {
-                        FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
-                        FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
-                        FlowDirectionTypes.FLOWDIRECTION_SOUTH,
-                        FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
-                        FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
-                        FlowDirectionTypes.FLOWDIRECTION_NORTH
-                    };
-                    
-                    local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction") + 1];
-                    TryStartRiver(plot, randomDir);
-                    inlandRiversAdded = inlandRiversAdded + 1;
-                end
-            end
-        end
+		if (plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
+			local pNWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHWEST);
+			local pNEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHEAST);
+			local pEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_EAST);
+			local pSEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_SOUTHEAST);
+			local pSWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_SOUTHWEST);
+			local pWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_WEST);
+
+			-- Don't start any rivers really near the map edge 
+			if (pNWPlot ~= nil and pNEPlot ~= nil and pEPlot ~= nil and pSEPlot ~= nil and pSWPlot ~= nil and pWPlot ~= nil) then
+	
+				-- 在丘陵上生成内陆河流
+				if plot:IsHills() then
+					if plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false then
+						-- 30% 几率生成河流
+						if TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30 then
+							-- 随机选择一个流向
+							local directions = {
+								FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
+								FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
+								FlowDirectionTypes.FLOWDIRECTION_SOUTH,
+								FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
+								FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
+								FlowDirectionTypes.FLOWDIRECTION_NORTH
+							};
+							
+							local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction") + 1];
+							TryStartRiver(plot, randomDir);
+							inlandRiversAdded = inlandRiversAdded + 1;
+						end
+					end
+				end
+			end
+		end
     end
 end
