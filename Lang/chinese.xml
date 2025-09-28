@@ -680,5 +680,15 @@
 		<Replace Tag="LOC_PEDIA_FEATURES_PAGE_FEATURE_WULINGYUAN_CHAPTER_HISTORY_PARA_1" Language="zh_Hans_CN">
 			<Text>武陵源是中国中南部的一处景点，以其3000多个石柱和峰丘而闻名，其中许多高度超过200米，并且还有峡谷、峡壑、池塘、湖泊、河流和瀑布。它拥有40多个洞穴和两座天然桥梁，仙人桥和天桥神洞。</Text>
 		</Replace>
+
+
+
+		
+		<Replace Tag="LOC_MAP_RICH_HIGHLANDS_RIVERS_NAME" Language="zh_Hans_CN">
+            <Text>多河高地</Text>
+        </Replace>
+        <Replace Tag="LOC_MAP_RICH_HIGHLANDS_RIVERS_DESCRIPTION" Language="en_US">
+            <Text>拥有很多河流的富饶高地</Text>
+        </Replace>
 	</LocalizedText>
 </GameData>
