@@ -676,6 +676,7 @@ function AddRivers()
 		if (plot:IsCoastalLand() or plot:IsHills()) then
 			local flag = plot:IsCoastalLand()
 			if (plot:IsHills() and TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 70) then
+				print("van try inland river")
 				flag = true
 			end
 			if (flag and plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
