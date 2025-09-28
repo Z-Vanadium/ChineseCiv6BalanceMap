@@ -673,8 +673,12 @@ function AddRivers()
 
 	for i = 0, (iW * iH) - 1, 1 do
 		plot = Map.GetPlotByIndex(i);
-		if (plot:IsCoastalLand()) then
-			if (plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
+		if (plot:IsCoastalLand() or plot:IsHills()) then
+			local flag = plot:IsCoastalLand()
+			if (plot:IsHills() and TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30) then
+				flag = true
+			end
+			if (flag and plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
 				local pNWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHWEST);
 				local pNEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHEAST);
 				local pEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_EAST);
@@ -715,7 +719,7 @@ function AddRivers()
 		end
 	end	
 
-	AddInlandRivers();
+	-- AddInlandRivers();
 end
 
 function AddInlandRivers()
