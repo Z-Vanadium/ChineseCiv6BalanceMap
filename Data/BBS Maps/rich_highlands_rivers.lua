@@ -19,8 +19,8 @@ include "CoastalLowlands"
 include "AssignStartingPlots"
 include "BBM_AssignStartingPlots"
 
--- 1: less rivers; 5: more rivers
-local PARA_RIVER = 4;
+-- 0: less rivers; 5: more rivers
+local PARA_RIVER = 0;
 
 
 local g_iW, g_iH;
