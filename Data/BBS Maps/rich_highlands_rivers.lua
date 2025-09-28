@@ -714,4 +714,42 @@ function AddRivers()
 			end			
 		end
 	end	
+
+	AddInlandRivers();
+end
+
+function AddInlandRivers()
+    print("Adding Simple Inland Rivers");
+    
+    local iW, iH = Map.GetGridSize();
+    local inlandRiversAdded = 0;
+    local maxInlandRivers = math.floor(iW * iH / 50);
+    
+    for i = 0, (iW * iH) - 1, 1 do
+        if inlandRiversAdded >= maxInlandRivers then break end
+        
+        local plot = Map.GetPlotByIndex(i);
+        
+        -- 在丘陵上生成内陆河流
+        if plot:GetPlotType() == g_PLOT_TYPE_HILLS then
+            if plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false then
+                -- 30% 几率生成河流
+                if TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30 then
+                    -- 随机选择一个流向
+                    local directions = {
+                        FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
+                        FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
+                        FlowDirectionTypes.FLOWDIRECTION_SOUTH,
+                        FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
+                        FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
+                        FlowDirectionTypes.FLOWDIRECTION_NORTH
+                    };
+                    
+                    local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction") + 1];
+                    TryStartRiver(plot, randomDir);
+                    inlandRiversAdded = inlandRiversAdded + 1;
+                end
+            end
+        end
+    end
 end
