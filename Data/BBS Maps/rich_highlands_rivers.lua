@@ -19,6 +19,9 @@ include "CoastalLowlands"
 include "AssignStartingPlots"
 include "BBM_AssignStartingPlots"
 
+-- 1: less rivers; 5: more rivers
+local PARA_RIVER = 4;
+
 
 local g_iW, g_iH;
 local g_iFlags = {};
@@ -682,8 +685,16 @@ function AddRivers()
 				-- Don't start any rivers really near the map edge 
 				if (pNWPlot ~= nil and pNEPlot ~= nil and pEPlot ~= nil and pSEPlot ~= nil and pSWPlot ~= nil and pWPlot ~= nil) then
 
+					local nearbyRivers = 0
+					for direction = 0, DirectionTypes.NUM_DIRECTION_TYPES - 1 do
+						local adjacentPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), direction)
+						if adjacentPlot and adjacentPlot:IsRiver() then
+							nearbyRivers = nearbyRivers + 1
+						end
+					end
+
 				    -- ... or near another river
-					if (not pNWPlot:IsRiver() and not pNEPlot:IsRiver() and not pEPlot:IsRiver() and not pSEPlot:IsRiver() and not pSWPlot:IsRiver() and not pWPlot:IsRiver()) then
+					if (nearbyRivers <= PARA_RIVER) then
 
 						if     (pEPlot:IsWater()  and not pSEPlot:IsWater() and not pSWPlot:IsWater() and not pWPlot:IsWater())  then
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTHEAST);
