@@ -729,9 +729,27 @@ function AddInlandRivers()
         if inlandRiversAdded >= maxInlandRivers then break end
         
         local plot = Map.GetPlotByIndex(i);
+
+		local TERRAIN_TYPE_GRASS = 0;
+		local TERRAIN_TYPE_GRASS_HILLS = 1;
+		local TERRAIN_TYPE_PLAINS = 3;
+		local TERRAIN_TYPE_PLAINS_HILLS = 4;
+		local TERRAIN_TYPE_DESERT = 6;
+		local TERRAIN_TYPE_DESERT_HILLS = 7;
+		local TERRAIN_TYPE_TUNDRA = 9;
+		local TERRAIN_TYPE_TUNDRA_HILLS = 10;
+		local TERRAIN_TYPE_SNOW = 12;
+		local TERRAIN_TYPE_SNOW_HILLS = 13;
+		local TERRAIN_TYPE_COAST = 15;
+		local TERRAIN_TYPE_OCEAN = 16;
         
         -- 在丘陵上生成内陆河流
-        if plot:GetPlotType() == g_PLOT_TYPE_HILLS then
+        if plot:GetTerrainType() == TERRAIN_TYPE_GRASS_HILLS
+		or plot:GetTerrainType() == TERRAIN_TYPE_PLAINS_HILLS
+		or plot:GetTerrainType() == TERRAIN_TYPE_DESERT_HILLS
+		or plot:GetTerrainType() == TERRAIN_TYPE_TUNDRA_HILLS
+		or plot:GetTerrainType() == TERRAIN_TYPE_SNOW_HILLS
+		then
             if plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false then
                 -- 30% 几率生成河流
                 if TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30 then
