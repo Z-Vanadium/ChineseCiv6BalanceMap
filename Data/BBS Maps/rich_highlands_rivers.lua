@@ -20,7 +20,7 @@ include "AssignStartingPlots"
 include "BBM_AssignStartingPlots"
 
 -- 0: less rivers; 5: more rivers
-local PARA_RIVER = 0;
+local PARA_RIVER = 1;
 
 
 local g_iW, g_iH;
@@ -100,7 +100,7 @@ function GenerateMap()
 	AddRivers();
 
 	-- Lakes would interfere with rivers, causing them to stop and not reach the ocean, if placed any sooner.
-	local numLargeLakes = math.ceil(GameInfo.Maps[Map.GetMapSize()].Continents / 2);
+	local numLargeLakes = math.ceil(GameInfo.Maps[Map.GetMapSize()].Continents);
 	AddLakes(numLargeLakes);
 
 	AddFeatures();
@@ -191,7 +191,8 @@ function GeneratePlotTypes()
 	end
    
 	
-	local lakes = 15;
+	-- local lakes = 15;
+	local lakes = 35;
 	local lake_grain = 3;
 	
 	local fracFlags = {};
@@ -673,13 +674,8 @@ function AddRivers()
 
 	for i = 0, (iW * iH) - 1, 1 do
 		plot = Map.GetPlotByIndex(i);
-		if (plot:IsCoastalLand() or plot:IsHills()) then
-			local flag = plot:IsCoastalLand()
-			if (plot:IsHills() and TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 80) then
-				print("van try inland river")
-				flag = true
-			end
-			if (flag and plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
+		if (plot:IsCoastalLand()) then
+			if (plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
 				local pNWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHWEST);
 				local pNEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHEAST);
 				local pEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_EAST);
@@ -713,18 +709,6 @@ function AddRivers()
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTHWEST);
 						elseif (pNEPlot:IsWater() and not pEPlot:IsWater()  and not pSEPlot:IsWater() and not pSWPlot:IsWater()) then
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTH);
-						else 
-							local directions = {
-								FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
-								FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
-								FlowDirectionTypes.FLOWDIRECTION_SOUTH,
-								FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
-								FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
-								FlowDirectionTypes.FLOWDIRECTION_NORTH
-							};
-							
-							local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction")];
-							TryStartRiver(plot, randomDir);
 						end
 					end
 				end
@@ -732,54 +716,4 @@ function AddRivers()
 		end
 	end	
 
-	-- AddInlandRivers();
-end
-
-function AddInlandRivers()
-    print("Adding Simple Inland Rivers");
-    
-    local iW, iH = Map.GetGridSize();
-    local inlandRiversAdded = 0;
-    local maxInlandRivers = math.floor(iW * iH / 50);
-    
-    for i = 0, (iW * iH) - 1, 1 do
-        if inlandRiversAdded >= maxInlandRivers then break end
-        
-        local plot = Map.GetPlotByIndex(i);
-
-		if (plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false) then
-			local pNWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHWEST);
-			local pNEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_NORTHEAST);
-			local pEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_EAST);
-			local pSEPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_SOUTHEAST);
-			local pSWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_SOUTHWEST);
-			local pWPlot = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), DirectionTypes.DIRECTION_WEST);
-
-			-- Don't start any rivers really near the map edge 
-			if (pNWPlot ~= nil and pNEPlot ~= nil and pEPlot ~= nil and pSEPlot ~= nil and pSWPlot ~= nil and pWPlot ~= nil) then
-	
-				-- 在丘陵上生成内陆河流
-				if plot:IsHills() then
-					if plot:IsNaturalWonder() == false and AdjacentToNaturalWonder(plot) == false then
-						-- 30% 几率生成河流
-						if TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 30 then
-							-- 随机选择一个流向
-							local directions = {
-								FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
-								FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
-								FlowDirectionTypes.FLOWDIRECTION_SOUTH,
-								FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
-								FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
-								FlowDirectionTypes.FLOWDIRECTION_NORTH
-							};
-							
-							local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction") + 1];
-							TryStartRiver(plot, randomDir);
-							inlandRiversAdded = inlandRiversAdded + 1;
-						end
-					end
-				end
-			end
-		end
-    end
 end
