@@ -688,7 +688,7 @@
             <Text>多河高地</Text>
         </Replace>
         <Replace Tag="LOC_MAP_RICH_HIGHLANDS_RIVERS_DESCRIPTION" Language="en_US">
-            <Text>拥有很多河流的富饶高地</Text>
+            <Text>拥有更多湖泊、河流的富饶高地</Text>
         </Replace>
 	</LocalizedText>
 </GameData>

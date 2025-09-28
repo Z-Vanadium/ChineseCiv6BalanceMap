@@ -192,7 +192,7 @@ function GeneratePlotTypes()
    
 	
 	-- local lakes = 15;
-	local lakes = 25;
+	local lakes = 15;
 	-- local lake_grain = 3;
 	local lake_grain = 5;
 	
