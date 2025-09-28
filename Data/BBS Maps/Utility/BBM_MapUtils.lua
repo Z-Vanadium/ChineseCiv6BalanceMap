@@ -5,6 +5,7 @@
 MapScripts = {};
 MapScripts.MAP_HIGHLANDS = "Highlands_XP2.lua"
 MapScripts.MAP_RICH_HIGHLANDS = "rich_highlands_xp2.lua"
+MapScripts.MAP_RICH_HIGHLANDS_RIVERS = "rich_highlands_rivers.lua"
 MapScripts.MAP_LAKES = "Lakes.lua"
 MapScripts.MAP_INLAND_SEA = "InlandSea.lua"
 MapScripts.MAP_SEVEN_SEAS = "Seven_Seas.lua"
@@ -879,7 +880,8 @@ function HexMap:SetMinimumDistanceMajorToMajorCivs()
     if minDistanceConfig == 0 then
         if self.mapScript == MapScripts.MAP_HIGHLANDS 
         or self.mapScript == MapScripts.MAP_LAKES 
-        or self.mapScript == MapScripts.MAP_RICH_HIGHLANDS then
+        or self.mapScript == MapScripts.MAP_RICH_HIGHLANDS
+        or self.mapScript == MapScripts.MAP_RICH_HIGHLANDS_RIVERS then
             return 15;
         elseif self.mapScript == MapScripts.MAP_INLAND_SEA 
         or self.mapScript == MapScripts.MAP_PANGAEA_ULTIMA then
