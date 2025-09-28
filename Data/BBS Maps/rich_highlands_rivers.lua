@@ -675,7 +675,7 @@ function AddRivers()
 		plot = Map.GetPlotByIndex(i);
 		if (plot:IsCoastalLand() or plot:IsHills()) then
 			local flag = plot:IsCoastalLand()
-			if (plot:IsHills() and TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 70) then
+			if (plot:IsHills() and TerrainBuilder.GetRandomNumber(100, "Simple Inland River") < 80) then
 				print("van try inland river")
 				flag = true
 			end
@@ -714,7 +714,17 @@ function AddRivers()
 						elseif (pNEPlot:IsWater() and not pEPlot:IsWater()  and not pSEPlot:IsWater() and not pSWPlot:IsWater()) then
 							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTH);
 						else 
-							TryStartRiver(plot, FlowDirectionTypes.FLOWDIRECTION_NORTH);
+							local directions = {
+								FlowDirectionTypes.FLOWDIRECTION_NORTHEAST,
+								FlowDirectionTypes.FLOWDIRECTION_SOUTHEAST, 
+								FlowDirectionTypes.FLOWDIRECTION_SOUTH,
+								FlowDirectionTypes.FLOWDIRECTION_SOUTHWEST,
+								FlowDirectionTypes.FLOWDIRECTION_NORTHWEST,
+								FlowDirectionTypes.FLOWDIRECTION_NORTH
+							};
+							
+							local randomDir = directions[TerrainBuilder.GetRandomNumber(#directions, "Random Inland Direction")];
+							TryStartRiver(plot, randomDir);
 						end
 					end
 				end
