@@ -2138,18 +2138,16 @@ function HexMap:TerraformSetResource(hex, resourceId, forced)
                         if g_LUX_ON_FOREST_LIST[resourceId] then
                             self:TerraformSetFeature(hex, g_FEATURE_FOREST)
                         end
-                    else
-                        if g_LUX_ON_FLAT_GRASS_LIST[resourceId] then
-                            self:TerraformSetFeature(hex, g_FEATURE_NONE)
-                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
-                        elseif g_LUX_ON_FLAT_PLAINS_LIST[resourceId] then
-                            self:TerraformSetFeature(hex, g_FEATURE_NONE)
-                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_PLAINS);
-                        elseif g_LUX_ON_FOREST_LIST[resourceId] then
-                            self:TerraformSetFeature(hex, g_FEATURE_FOREST)
-                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
-                        end
                     end
+                elseif g_LUX_ON_FLAT_GRASS_LIST[resourceId] then
+                    self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
+                elseif g_LUX_ON_FLAT_PLAINS_LIST[resourceId] then
+                    self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_PLAINS);
+                elseif g_LUX_ON_FOREST_LIST[resourceId] then
+                    self:TerraformSetFeature(hex, g_FEATURE_FOREST)
+                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
                 end
             end
         end
