@@ -166,6 +166,34 @@ g_LUX_ON_FOREST_LIST[g_RESOURCE_TRUFFLES] = true
 g_LUX_ON_FOREST_LIST[g_RESOURCE_SPICES] = true
 g_LUX_ON_FOREST_LIST[g_RESOURCE_AMBER] = true
 
+-- all lux that can spawn on tundra (including on forest)
+g_LUX_ON_FLAT_TUNDRA = {}
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_AMBER] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_FURS] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_WINE] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_DYES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SILK] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_TRUFFLES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SPICES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_IVORY] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_TOBACCO] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SALT] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SILVER] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_JADE] = true
+
+g_LUX_ON_HILLS_TUNDRA = {}
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_AMBER] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_FURS] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_WINE] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_DYES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SILK] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_TRUFFLES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SPICES] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_IVORY] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_TOBACCO] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_SILVER] = true
+g_LUX_ON_FLAT_TUNDRA[g_RESOURCE_DIAMONDS] = true
+
 -- List of lux with bonus culture, science or faith
 g_RESOURCES_LUX_EXTRA_YIELD = {}
 -- Culture
@@ -2086,15 +2114,42 @@ function HexMap:TerraformSetResource(hex, resourceId, forced)
             -- Special force placement on lux, to help CheckLuxThreshold method to make room for most restrictives lux placements
             elseif hex:IsFloodplains(true) == false then
                 print("Try force placement of lux ", resourceId, hex:PrintXY())
-                if g_LUX_ON_FLAT_GRASS_LIST[resourceId] then
-                    self:TerraformSetFeature(hex, g_FEATURE_NONE)
-                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
-                elseif g_LUX_ON_FLAT_PLAINS_LIST[resourceId] then
-                    self:TerraformSetFeature(hex, g_FEATURE_NONE)
-                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_PLAINS);
-                elseif g_LUX_ON_FOREST_LIST[resourceId] then
-                    self:TerraformSetFeature(hex, g_FEATURE_FOREST)
-                    self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
+
+                -- check whether the hex is adjacent to any tundra or hills
+                local adjacentTundraOrHills = false;
+                for i = 1, 6 do
+                    local temp_plot = Map:GetAdjacentPlot(hex.GetX(), hex.GetY(), i)
+                    if temp_plot and temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA or temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA_HILLS then
+                        adjacentTundraOrHills = true
+                        break
+                    end
+                end
+
+                if adjacentTundraOrHills then
+                    if g_LUX_ON_HILLS_TUNDRA[resourceId] then
+                        self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_TUNDRA_HILLS)
+                        self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                        if g_LUX_ON_FOREST_LIST[resourceId] then
+                            self:TerraformSetFeature(hex, g_FEATURE_FOREST)
+                        end
+                    elseif g_LUX_ON_FLAT_TUNDRA[resourceId]then
+                        self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_TUNDRA)
+                        self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                        if g_LUX_ON_FOREST_LIST[resourceId] then
+                            self:TerraformSetFeature(hex, g_FEATURE_FOREST)
+                        end
+                    else
+                        if g_LUX_ON_FLAT_GRASS_LIST[resourceId] then
+                            self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
+                        elseif g_LUX_ON_FLAT_PLAINS_LIST[resourceId] then
+                            self:TerraformSetFeature(hex, g_FEATURE_NONE)
+                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_PLAINS);
+                        elseif g_LUX_ON_FOREST_LIST[resourceId] then
+                            self:TerraformSetFeature(hex, g_FEATURE_FOREST)
+                            self:TerraformSetTerrain(hex, g_TERRAIN_TYPE_GRASS);
+                        end
+                    end
                 end
             end
         end
