@@ -25,6 +25,7 @@ function CivilizationAssignSpawn.new(player, leader, name, team, index)
     instance.IsKingNorthBias = false;
     instance.IsContSplitBias = false;
     instance.IsMountainLoverBias = false;
+    instance.IsDeepTundra = false;
     instance.IsMountainBias = false; --less priority than the lover
     instance.IsOceanBias = false;
     instance.HighestBias = 6
@@ -170,6 +171,8 @@ function CivilizationAssignSpawn:GetBiases()
                 elseif (bias.Type == "CUSTOM_HYDROPHOBIC") then	
                     self.IsHydrophobicBias = true;
                     self.IsNoFreshWaterBias = true;
+                elseif (bias.Type == "CUSTOM_DEEP_TUNDRA") then
+                    self.IsDeepTundra = true;
                 end			
 			end			
         end
@@ -1036,11 +1039,18 @@ function CivilizationAssignSpawn:IsBiasRespected(hex, hexMap)
     end
     if self.IsTundraBias then
         local nonTundraRing3 = self:GetNonTundraTilesCountRing3(hex)
-        if self.CivilizationLeader == "LEADER_LAURIER" and nonTundraRing3 > 3 then
+        -- love for deeper tundra 
+        if (self.IsDeepTundra and nonTundraRing3 > 3) then
             return false
-        elseif self.CivilizationLeader == "LEADER_PETER_GREAT" and nonTundraRing3 <= 3 then
+        -- no love for deeper tundra
+        elseif (self.IsDeepTundra == false and nonTundraRing3 <= 3) then
             return false
         end
+        -- if self.CivilizationLeader == "LEADER_LAURIER" and nonTundraRing3 > 3 then
+        --     return false
+        -- elseif self.CivilizationLeader == "LEADER_PETER_GREAT" and nonTundraRing3 <= 3 then
+        --     return false
+        -- end
     end
      -- Custom bias treated by valid tiles
     local isOneOfBiasRespected = false;
