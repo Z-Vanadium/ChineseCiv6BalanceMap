@@ -640,6 +640,16 @@ function CivilizationAssignSpawn:ComputeHexScoreCiv(hex)
     end
     -------------------
     -- 5 - Malus scoring to discourage this spawn unless this is the last option
+    -- Tundra : have full ring1 + half ring 2 
+    local tundraMalus = 0
+    if self.IsTundraBias then
+        local nonTundraR1 = false
+        for _, h in ipairs(hex.AllRing6Map[1]) do
+            if h:IsWater() == false and h:IsTundraLand() == false and h:IsSnowLand() == false then
+                score = score - 20
+            end
+        end
+    end
     -------------------
     -- Flood malus - Discourage from spawning inside floodplains if not in bias
     local floodMalus = 0;
