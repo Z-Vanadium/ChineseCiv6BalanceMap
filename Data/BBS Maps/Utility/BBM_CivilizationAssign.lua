@@ -450,7 +450,7 @@ function CivilizationAssignSpawn:FindDesertBiasV2(hex)
         if r:IsImpassable() == false then
             if r:IsDesertLand() then
                 countDesertR1 = countDesertR1 + 1;
-            elseif r:IsGrassLand() or r:IsPlainLand() then
+            elseif (r:IsGrassLand() or r:IsPlainLand() and not r:IsFloodplains(false)) then
                 countLandR1 = countLandR1 + 1;
             end
         end
@@ -459,7 +459,7 @@ function CivilizationAssignSpawn:FindDesertBiasV2(hex)
         if r:IsImpassable() == false then
             if r:IsDesertLand() then
                 countDesertR2 = countDesertR2 + 1;
-            elseif r:IsGrassLand() or r:IsPlainLand() then
+            elseif (r:IsGrassLand() or r:IsPlainLand() and not r:IsFloodplains(false)) then
                 countLandR2 = countLandR2 + 1;
             end
         end
