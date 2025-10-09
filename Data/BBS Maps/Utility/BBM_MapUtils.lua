@@ -2126,7 +2126,7 @@ function HexMap:TerraformSetResource(hex, resourceId, forced)
                 local adjacentTundraOrHills = false;
                 for i = 1, 6 do
                     local temp_plot = Map.GetAdjacentPlot(hex:GetX(), hex:GetY(), i)
-                    if temp_plot and temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA or temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA_HILLS then
+                    if temp_plot and (temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA or temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA_HILLS) then
                         adjacentTundraOrHills = true
                         break
                     end
