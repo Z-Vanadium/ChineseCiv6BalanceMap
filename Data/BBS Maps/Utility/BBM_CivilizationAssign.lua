@@ -490,7 +490,7 @@ function CivilizationAssignSpawn:FindDesertBiasV2(hex)
         if r:IsImpassable() == false then
             if r:IsDesertLand() then
                 countDesertR1 = countDesertR1 + 1;
-            elseif r:IsGrassLand() or r:IsPlainLand() then
+            elseif (r:IsGrassLand() or r:IsPlainLand() and not r:IsFloodplains(false)) then
                 countLandR1 = countLandR1 + 1;
             end
         end
@@ -499,7 +499,7 @@ function CivilizationAssignSpawn:FindDesertBiasV2(hex)
         if r:IsImpassable() == false then
             if r:IsDesertLand() then
                 countDesertR2 = countDesertR2 + 1;
-            elseif r:IsGrassLand() or r:IsPlainLand() then
+            elseif (r:IsGrassLand() or r:IsPlainLand() and not r:IsFloodplains(false)) then
                 countLandR2 = countLandR2 + 1;
             end
         end
@@ -680,6 +680,16 @@ function CivilizationAssignSpawn:ComputeHexScoreCiv(hex)
     end
     -------------------
     -- 5 - Malus scoring to discourage this spawn unless this is the last option
+    -- Tundra : have full ring1 + half ring 2 
+    local tundraMalus = 0
+    if self.IsTundraBias then
+        local nonTundraR1 = false
+        for _, h in ipairs(hex.AllRing6Map[1]) do
+            if h:IsWater() == false and h:IsTundraLand() == false and h:IsSnowLand() == false then
+                score = score - 20
+            end
+        end
+    end
     -------------------
     -- Flood malus - Discourage from spawning inside floodplains if not in bias
     local floodMalus = 0;
