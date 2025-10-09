@@ -326,12 +326,14 @@ g_PASSABLE_LAND = "PassableLand";
 
 TeamerConfigStandard = "Standard";
 TeamerConfigEastVsWest = "EastVsWest";
+TeamerConfigSouthVsNorth = "SouthVsNorth";
 EastTeam = "East";
 WestTeam = "West";
-
+SouthTeam = "South";
+NorthTeam = "North";
 
 function _Debug(...)
-    --print(...);
+    print(...);
 end
 
 function IsWorldAgeOld()
@@ -893,6 +895,11 @@ function HexMap.new(_width, _height, mapScript)
     instance.RTSPangaeaTeamerConfigSimMin = math.floor(_width * 0.2 + 0.5); -- on 4v4 = +-17 from middle
     -- Put maps parameters here ? (world age, temperature, rainfall etc)
     -- BBM Mountains change = recalculate areas
+    instance.MiddleY = _height / 2;
+    instance.RTSPangaeaTeamerSvNBuffer = math.floor(_height * 0.10 + 0.5); 
+    instance.RTSPangaeaTeamerConfigWarMaxSvN = math.floor(_height * 0.13 + 0.5);
+    instance.RTSPangaeaTeamerConfigWarMaxTundraSvN = math.floor(_height * 0.18 + 0.5);
+    instance.RTSPangaeaTeamerConfigSimMinSvN = math.floor(_height * 0.2 + 0.5);
     AreaBuilder.Recalculate();
     TerrainBuilder.AnalyzeChokepoints();
     return instance;
@@ -2085,9 +2092,9 @@ function HexMap:TerraformSetResource(hex, resourceId, forced)
                 return false;
             end
             if resourceId == g_RESOURCE_HORSES then
-                if (IsPlainLand(hex.TerrainType) == false and IsGrassLand(hex.TerrainType) == false) then
-                    return false;
-                end
+                -- if (IsPlainLand(hex.TerrainType) == false and IsGrassLand(hex.TerrainType) == false) then
+                --     return false;
+                -- end
                 self:TerraformToFlat(hex, true);
             elseif resourceId == g_RESOURCE_IRON then
                 self:TerraformToHill(hex, true);
@@ -2118,7 +2125,7 @@ function HexMap:TerraformSetResource(hex, resourceId, forced)
                 -- check whether the hex is adjacent to any tundra or hills
                 local adjacentTundraOrHills = false;
                 for i = 1, 6 do
-                    local temp_plot = Map:GetAdjacentPlot(hex.GetX(), hex.GetY(), i)
+                    local temp_plot = Map.GetAdjacentPlot(hex:GetX(), hex:GetY(), i)
                     if temp_plot and temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA or temp_plot:GetTerrainType() == g_TERRAIN_TYPE_TUNDRA_HILLS then
                         adjacentTundraOrHills = true
                         break
@@ -3687,6 +3694,8 @@ function HexMap:GetTeamerPositionConfig()
         _Debug("GetTeamerPositionConfig : ", Teamers_Config)
         if Teamers_Config == 1 then
             return TeamerConfigEastVsWest;
+        elseif Teamers_Config == 2 then
+            return TeamerConfigSouthVsNorth;
         end
     end 
     return TeamerConfigStandard;

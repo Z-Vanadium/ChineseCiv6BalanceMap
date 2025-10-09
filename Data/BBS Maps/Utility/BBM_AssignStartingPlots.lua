@@ -192,7 +192,8 @@ function BBM_AssignStartingPlots.Create(args)
             end
             local teamSize = #BBM_Teams[civ.CivilizationTeam] or 1    
             
-            if BBM_HexMap.TeamerConfig == TeamerConfigEastVsWest then
+            if BBM_HexMap.TeamerConfig == TeamerConfigEastVsWest
+            or BBM_HexMap.TeamerConfig == TeamerConfigSouthVsNorth then
                 civ.TeamerSim = playerTeamIndex <= teamSize / 2 + teamSize % 2;
                 civ.TeamerWar = playerTeamIndex > teamSize / 2 + teamSize % 2;
             end  
@@ -454,6 +455,31 @@ function BBM_AssignStartingPlots:__PlaceMajorCivs(civs, BBM_HexMap, index)
                 end
                 
             end
+            if BBM_HexMap.TeamerConfig == TeamerConfigSouthVsNorth then
+                BBM_HexMap.RTSContinentSetup = BBM_HexMap.RTSContinentSetup or {}
+                BBM_HexMap.RTSContinentSetup[civ.CivilizationTeam] = spawnHex.IslandId;
+                if spawnHex:GetY() > BBM_HexMap.MiddleY then
+                    civ.TeamerSide = NorthTeam;
+                else
+                    civ.TeamerSide = SouthTeam;
+                end
+                _Debug("Vanadium temp checkpoint 1 ",BBM_HexMap.TeamerConfig)
+                for team, _ in pairs(BBM_Teams) do
+                    for _, teamCiv in pairs(BBM_Teams[team]) do
+                        if teamCiv.TeamerSide == "" then
+                            if civ.CivilizationTeam == teamCiv.CivilizationTeam then
+                                _Debug("Going through same team civ ", teamCiv.CivilizationLeader, teamCiv.CivilizationTeam, civ.TeamerSide);
+                                teamCiv.TeamerSide = civ.TeamerSide;
+                                teamCiv.TeamerContinentId = spawnHex.IslandId;
+                            else
+                                _Debug("Other side for opposing team ", teamCiv.CivilizationLeader, teamCiv.CivilizationTeam, civ.TeamerSide);
+                                teamCiv.TeamerSide = getRTSOtherSide(civ.TeamerSide);
+                            end
+                        end
+                    end
+                end
+                
+            end
             _Debug("Civ ", ind, " in team ", civ.CivilizationTeam, " - Continent ID = ", spawnHex.IdContinent)
         end
     end
@@ -466,6 +492,10 @@ function getRTSOtherSide(teamerSide)
         return WestTeam;
     elseif teamerSide == WestTeam then
         return EastTeam;
+    elseif teamerSide == SouthTeam then
+        return NorthTeam;
+    elseif teamerSide == NorthTeam then
+        return SouthTeam;
     end
 end
 

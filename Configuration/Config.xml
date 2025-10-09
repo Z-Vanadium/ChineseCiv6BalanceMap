@@ -167,6 +167,7 @@
 
 		<Row Domain="BBM_Team_Spawn" Value="0" Name="BBM_Team_Spawn_NORMAL_NAME" Description="BBM_Team_Spawn_NORMAL_DESC" SortIndex="10"/>
 		<Row Domain="BBM_Team_Spawn" Value="1" Name="BBM_Team_Spawn_EW_NAME" Description="BBM_Team_Spawn_EW_DESC" SortIndex="20"/>
+		<Row Domain="BBM_Team_Spawn" Value="2" Name="BBM_Team_Spawn_SN_NAME" Description="BBM_Team_Spawn_SN_DESC" SortIndex="30"/>
 
 		<Row Domain="StratResDomain" Value="0" Name="BBS_SRESOURCES_NORMAL_NAME" Description="BBS_SRESOURCES_NORMAL_DESC" SortIndex="10"/>
 		<Row Domain="StratResDomain" Value="1" Name="BBS_SRESOURCES_MORE_NAME" Description="BBS_SRESOURCES_MORE_DESC" SortIndex="20"/>

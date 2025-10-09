@@ -389,36 +389,72 @@ function CivilizationAssignSpawn:GetXPlacementCondition(BBM_HexMap, hex)
         return true;
     end
     BBM_HexMap.RTSContinentSetup = BBM_HexMap.RTSContinentSetup or {}
-    if BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA 
-        or BBM_HexMap.mapScript == MapScripts.MAP_INLAND_SEA 
-        or BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA_ULTIMA then
-        if self.TeamerWar then
-            local warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMax
-            if self.IsTundraBias then
-                warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxTundra;
+    if BBM_HexMap.TeamerConfig == TeamerConfigEastVsWest then
+        if BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA 
+            or BBM_HexMap.mapScript == MapScripts.MAP_INLAND_SEA 
+            or BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA_ULTIMA then
+            if self.TeamerWar then
+                local warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMax
+                if self.IsTundraBias then
+                    warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxTundra;
+                end
+                if self.TeamerSide == EastTeam then
+                    return hex:GetX() > BBM_HexMap.MiddleX + BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() <= BBM_HexMap.MiddleX + warSizeMax;
+                elseif self.TeamerSide == WestTeam then
+                    return hex:GetX() < BBM_HexMap.MiddleX - BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() >= BBM_HexMap.MiddleX - warSizeMax;
+                else -- Side not attributed yet
+                    return (hex:GetX() > BBM_HexMap.MiddleX + BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() <= BBM_HexMap.MiddleX + warSizeMax)
+                        or (hex:GetX() < BBM_HexMap.MiddleX - BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() >= BBM_HexMap.MiddleX - warSizeMax)
+                end 
+            elseif self.TeamerSim then
+                local minimumSimDistance = BBM_HexMap.RTSPangaeaTeamerConfigSimMin;
+                if BBM_PlayerNumber == 2 then
+                    minimumSimDistance = 5;
+                end
+                if self.TeamerSide == EastTeam then
+                    return hex:GetX() > BBM_HexMap.MiddleX + minimumSimDistance;
+                elseif self.TeamerSide == WestTeam then
+                    return hex:GetX() < BBM_HexMap.MiddleX - minimumSimDistance;
+                else -- Side not attributed yet
+                    return (hex:GetX() > BBM_HexMap.MiddleX + minimumSimDistance) or (hex:GetX() < BBM_HexMap.MiddleX - minimumSimDistance);
+                end 
             end
-            if self.TeamerSide == EastTeam then
-                return hex:GetX() > BBM_HexMap.MiddleX + BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() <= BBM_HexMap.MiddleX + warSizeMax;
-            elseif self.TeamerSide == WestTeam then
-                return hex:GetX() < BBM_HexMap.MiddleX - BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() >= BBM_HexMap.MiddleX - warSizeMax;
-            else -- Side not attributed yet
-                return (hex:GetX() > BBM_HexMap.MiddleX + BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() <= BBM_HexMap.MiddleX + warSizeMax)
-                    or (hex:GetX() < BBM_HexMap.MiddleX - BBM_HexMap.RTSPangaeaTeamerEvWBuffer and hex:GetX() >= BBM_HexMap.MiddleX - warSizeMax)
-            end 
-        elseif self.TeamerSim then
-            local minimumSimDistance = BBM_HexMap.RTSPangaeaTeamerConfigSimMin;
-            if BBM_PlayerNumber == 2 then
-                minimumSimDistance = 5;
-            end
-            if self.TeamerSide == EastTeam then
-                return hex:GetX() > BBM_HexMap.MiddleX + minimumSimDistance;
-            elseif self.TeamerSide == WestTeam then
-                return hex:GetX() < BBM_HexMap.MiddleX - minimumSimDistance;
-            else -- Side not attributed yet
-                return (hex:GetX() > BBM_HexMap.MiddleX + minimumSimDistance) or (hex:GetX() < BBM_HexMap.MiddleX - minimumSimDistance);
-            end 
+            return true;
         end
-        return true;
+    end
+
+    if BBM_HexMap.TeamerConfig == TeamerConfigSouthVsNorth then        
+        if BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA 
+            or BBM_HexMap.mapScript == MapScripts.MAP_INLAND_SEA 
+            or BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA_ULTIMA then
+            if self.TeamerWar then
+                local warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxSvN
+                if self.IsTundraBias then
+                    warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxTundraSvN;
+                end
+                if self.TeamerSide == NorthTeam then
+                    return hex:GetY() > BBM_HexMap.MiddleY + BBM_HexMap.RTSPangaeaTeamerSvNBuffer and hex:GetY() <= BBM_HexMap.MiddleY + warSizeMax;
+                elseif self.TeamerSide == SouthTeam then
+                    return hex:GetY() < BBM_HexMap.MiddleY - BBM_HexMap.RTSPangaeaTeamerSvNBuffer and hex:GetY() >= BBM_HexMap.MiddleY - warSizeMax;
+                else -- Side not attributed yet
+                    return (hex:GetY() > BBM_HexMap.MiddleY + BBM_HexMap.RTSPangaeaTeamerSvNBuffer and hex:GetY() <= BBM_HexMap.MiddleY + warSizeMax)
+                        or (hex:GetY() < BBM_HexMap.MiddleY - BBM_HexMap.RTSPangaeaTeamerSvNBuffer and hex:GetY() >= BBM_HexMap.MiddleY - warSizeMax)
+                end 
+            elseif self.TeamerSim then
+                local minimumSimDistance = BBM_HexMap.RTSPangaeaTeamerConfigSimMinSvN;
+                if BBM_PlayerNumber == 2 then
+                    minimumSimDistance = 5;
+                end
+                if self.TeamerSide == NorthTeam then
+                    return hex:GetY() > BBM_HexMap.MiddleY + minimumSimDistance;
+                elseif self.TeamerSide == SouthTeam then
+                    return hex:GetY() < BBM_HexMap.MiddleY - minimumSimDistance;
+                else -- Side not attributed yet
+                    return (hex:GetY() > BBM_HexMap.MiddleY + minimumSimDistance) or (hex:GetY() < BBM_HexMap.MiddleY - minimumSimDistance);
+                end 
+            end
+            return true;
+        end
     end
     if BBM_HexMap.mapScript == MapScripts.MAP_CONTINENTS or BBM_HexMap.mapScript == MapScripts.MAP_CONTINENTS_ISLANDS then
         local continentTeam = BBM_HexMap.RTSContinentSetup[self.CivilizationTeam];
@@ -427,6 +463,10 @@ function CivilizationAssignSpawn:GetXPlacementCondition(BBM_HexMap, hex)
                 return hex:GetX() >= BBM_HexMap.MiddleX;
             elseif self.TeamerSide == WestTeam then
                 return hex:GetX() < BBM_HexMap.MiddleX;
+            elseif self.TeamerSide == NorthTeam then
+                return hex:GetY() >= BBM_HexMap.MiddleY;
+            elseif self.TeamerSide == SouthTeam then
+                return hex:GetY() < BBM_HexMap.MiddleY;
             end
         else 
             return false;
