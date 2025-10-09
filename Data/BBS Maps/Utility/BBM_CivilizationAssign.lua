@@ -429,7 +429,8 @@ function CivilizationAssignSpawn:GetXPlacementCondition(BBM_HexMap, hex)
             or BBM_HexMap.mapScript == MapScripts.MAP_PANGAEA_ULTIMA then
             if self.TeamerWar then
                 local warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxSvN
-                if self.IsTundraBias then
+                if self.IsTundraBias 
+                    or self.IsDesertBias then
                     warSizeMax = BBM_HexMap.RTSPangaeaTeamerConfigWarMaxTundraSvN;
                 end
                 if self.TeamerSide == NorthTeam then

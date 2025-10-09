@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameData>
   <LocalizedText>
+	<Replace Tag="BBM_Team_Spawn_SN_NAME" language="zh_Hans_CN">
+		<Text>南北分布</Text>
+	</Replace>
+	<Replace Tag="BBM_Team_Spawn_SN_DESC" language="zh_Hans_CN">
+		<Text>同一队伍的玩家大概率在南北分布的同侧，楼层越高的玩家越靠近两极（冻土文明、沙漠文明除外，他们倾向于分布在合适的地方）</Text>
+	</Replace>
 	
 	<!-- New entries -->
 	<Replace Tag="I18N_BALANCING_TYPE_1_NAME" language="en">

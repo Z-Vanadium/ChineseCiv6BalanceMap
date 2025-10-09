@@ -896,9 +896,9 @@ function HexMap.new(_width, _height, mapScript)
     -- Put maps parameters here ? (world age, temperature, rainfall etc)
     -- BBM Mountains change = recalculate areas
     instance.MiddleY = _height / 2;
-    instance.RTSPangaeaTeamerSvNBuffer = math.floor(_height * 0.10 + 0.5); 
-    instance.RTSPangaeaTeamerConfigWarMaxSvN = math.floor(_height * 0.13 + 0.5);
-    instance.RTSPangaeaTeamerConfigWarMaxTundraSvN = math.floor(_height * 0.18 + 0.5);
+    instance.RTSPangaeaTeamerSvNBuffer = math.floor(_height * 0.08 + 0.5); 
+    instance.RTSPangaeaTeamerConfigWarMaxSvN = math.floor(_height * 0.15 + 0.5);
+    instance.RTSPangaeaTeamerConfigWarMaxTundraSvN = math.floor(_height * 0.45 + 0.5);
     instance.RTSPangaeaTeamerConfigSimMinSvN = math.floor(_height * 0.2 + 0.5);
     AreaBuilder.Recalculate();
     TerrainBuilder.AnalyzeChokepoints();
