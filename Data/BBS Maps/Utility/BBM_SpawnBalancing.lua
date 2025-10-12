@@ -2904,3 +2904,55 @@ function SpawnBalancing:Terraform(hex, type, id, forced, boolParam)
         return false;
     end
 end
+
+-- check if walkable fresh water is available in ring 4 to max ring, and add lake for less fresh civ
+-- fresh water plots include river, lake, oasis and coastal
+function SpawnBalancing:CheckWalkableFresh()
+    local running = MapConfiguration.GetValue("CCB_Spawn_Lake")
+    if running ~= nil or running == false then
+        return
+    end
+    _Debug("Start CheckWalkableFresh for Civ", self.Civ, "in plot", self.Hex:PrintXY())
+    local walkable_fresh_plot = 0
+    local walkable_no_water_hex_table = {}
+    -- start check walkable water plot from ring 4 to max ring
+    for i = 4, self.MaxRing do
+        for _, hex in pairs(self.Hex.WalkableHexInRing[i]) do
+            if hex.IsFreshWater or hex.IsCoastal then
+                walkable_fresh_plot = walkable_fresh_plot + 1
+                -- _Debug("Found walkable fresh water plot in ring", i, "at", hex:PrintXY())
+            else
+            -- elseif hex.IsImpassable == false then
+                table.insert(walkable_no_water_hex_table, hex)
+            end
+        end
+    end
+    _Debug("Total walkable fresh water plot found =", walkable_fresh_plot, "# of walkable no water hex =", #walkable_no_water_hex_table)
+    -- try to add lakes in walkable no water hex
+    local lake_threshold = 0
+    if walkable_fresh_plot >= 6 then
+        lake_threshold = 0
+    elseif walkable_fresh_plot >= 3 then
+        lake_threshold = 1
+    elseif walkable_fresh_plot >= 1 then
+        lake_threshold = 2
+    else
+        lake_threshold = 3
+    end
+    local lake_added = 0
+    local shuffled_walkable_no_water_hex_table = GetShuffledCopyOfTable(walkable_no_water_hex_table)
+        
+    if lake_added >= lake_threshold then
+        return
+    end
+    for _, hex in pairs(shuffled_walkable_no_water_hex_table) do
+        self:Terraform(hex, TerraformType[99], 0, true, false)
+        self:Terraform(hex, TerraformType[1], g_TERRAIN_TYPE_COAST, true, false)
+        -- debug
+        -- self:Terraform(hex, TerraformType[3], g_RESOURCE_FISH, true, false)
+        lake_added = lake_added + 1
+        -- walkable_fresh_plot = walkable_fresh_plot + 1
+        _Debug("Lake added at", hex:PrintXY(), "Total lake added =", lake_added)
+    end
+    return
+end

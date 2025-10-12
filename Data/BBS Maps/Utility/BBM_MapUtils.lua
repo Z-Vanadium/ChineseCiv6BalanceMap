@@ -3904,6 +3904,7 @@ function InitSpawnBalancing(hexMap, civ)
     --balancing:AddHighYieldFromStandard();
     balancing:CheckMinimumWorkable();
     balancing:HillsMinimumCheck();
+    balancing:CheckWalkableFresh();
     return balancing;
 end
 

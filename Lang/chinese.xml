@@ -377,6 +377,12 @@
 		<Replace Tag="BBM_Team_Spawn_NS_DESC" Language="zh_Hans_CN">
 			<Text>同一队伍的文明很大概率共同位于南侧或北侧。</Text>
 		</Replace>
+		<Replace Tag="LOC_CCB_Spawn_Lake_NAME" language="zh_Hans_CN">
+			<Text>淡水补偿</Text>
+		</Replace>
+		<Replace Tag="LOC_CCB_Spawn_Lake_DESC" language="zh_Hans_CN">
+			<Text>开启后，若玩家的出生点周围 4-6 环可通行地块中，淡水和海水地块数量之和不足，则在 4-6 环可通行地块随机增加湖泊，增加数量依据不足程度而定。</Text>
+		</Replace>
 		
 		
 
