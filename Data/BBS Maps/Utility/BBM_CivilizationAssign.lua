@@ -1165,7 +1165,7 @@ function CivilizationAssignSpawn:IsBiasRespected(hex, hexMap)
                     if self.IsMountainLoverBias then
                         if i <= 2 and hring:IsMountain() then
                             countMountains = countMountains + 1;
-                            if countMountains >= 2 then
+                            if countMountains >= 5 then
                                 isOneOfBiasRespected = true;
                             end
                         end
