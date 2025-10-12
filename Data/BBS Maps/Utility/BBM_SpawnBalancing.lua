@@ -2941,11 +2941,11 @@ function SpawnBalancing:CheckWalkableFresh()
     end
     local lake_added = 0
     local shuffled_walkable_no_water_hex_table = GetShuffledCopyOfTable(walkable_no_water_hex_table)
-        
-    if lake_added >= lake_threshold then
-        return
-    end
+    
     for _, hex in pairs(shuffled_walkable_no_water_hex_table) do
+        if lake_added >= lake_threshold then
+            return
+        end
         self:Terraform(hex, TerraformType[99], 0, true, false)
         self:Terraform(hex, TerraformType[1], g_TERRAIN_TYPE_COAST, true, false)
         -- debug
