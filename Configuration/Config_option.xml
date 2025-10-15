@@ -1,7 +1,6 @@
 <GameInfo>
 	<Parameters>
 		<Row ParameterId="BBG_Team_Spawn" Name="LOC_BBM_Team_Spawn_NAME" Description="LOC_BBM_Team_Spawn_DESC" Domain="bool" DefaultValue="1" ConfigurationGroup="Map" ConfigurationId="BBG_Team_Spawn" GroupId="MapOptions" Visible="0" SortIndex="233"/>
-		<Row ParameterId="CCB_Spawn_Lake" Name="LOC_CCB_Spawn_Lake_NAME" Description="LOC_CCB_Spawn_Lake_DESC" Domain="bool" DefaultValue="0" ConfigurationGroup="Map" ConfigurationId="BBG_Team_Spawn" GroupId="MapOptions" Visible="0" SortIndex="234"/>
       <!-- <Row ParameterId="BBM_MIN_DISTANCE" Name="LOC_BBM_MIN_DISTANCE_NAME" Description="LOC_BBM_MIN_DISTANCE_DESC" Domain="bool" DefaultValue="1" ConfigurationGroup="Map" ConfigurationId="BBG_Team_Spawn" GroupId="MapOptions" Visible="0" SortIndex="233"/> -->
 	</Parameters>
 </GameInfo>	
