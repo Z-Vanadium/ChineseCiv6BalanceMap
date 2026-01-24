@@ -3899,6 +3899,7 @@ function InitSpawnBalancing(hexMap, civ)
     balancing:CheckLuxThreshold();
     balancing:CheckInnerRingHighYieldsThreshold();
     balancing:GaranteedStandardHighFoodInnerRing();
+    balancing:GetCoastalScoreHex();
     balancing:ApplyMinimalLandTiles(1, 6);
     balancing:ApplyGaranteedStrategics();
     --balancing:AddHighYieldFromStandard();
