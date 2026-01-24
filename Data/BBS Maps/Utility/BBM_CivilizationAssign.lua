@@ -372,8 +372,8 @@ function CivilizationAssignSpawn:GetValidSpawnsInHexList(BBM_HexMap, listHex)
                 elseif self.IsCoastalBias == false and (hex.IsFreshWater or hex.IsCoastal) and hex:IsTundraLand() == false then
                     table.insert(validTiles, hex);
                 end
-            elseif self.IsTundraBias and hex:IsTundraLand() and hex.IsFreshWater then
-                table.insert(validTiles, hex);
+            elseif self.IsTundraBias and hex:IsTundraLand() and (hex.IsFreshWater or (hex.IsCoastal and self.IsCoastalBias)) then
+                    table.insert(validTiles, hex);
             --elseif self.IsDesertBias and hex:IsDesertLand() and hex.IsFreshWater then
             elseif self.IsDesertBias  and self:FindDesertBiasV2(hex) then
                 table.insert(validTiles, hex);
