@@ -267,6 +267,31 @@ function SpawnBalancing:TerraformRing6Deserts()
         end
 
     end
+
+    -- modify snow to tundra
+    -- in ring2: snow -> tundra; snow hills -> tundra hills with 100% probility
+    -- in ring3: with 30% probility
+    if self.Civ.IsTundraBias then
+        _Debug("TerraformRing4Snow");
+        local i = 1;
+        while (i < 4) do
+            for _, h in ipairs(self.RingTables[i].HexRings) do
+                local rng = 0;
+                if i == 3 then
+                    rng = TerrainBuilder.GetRandomNumber(100, "Snow to Tundra");
+                end
+                if (i < 3 or rng <= 30) and h:IsSnowLand() then
+                    -- terrain
+                    if h:IsHill() then
+                        self:TerraformHex(h, i, TerraformType[1], g_TERRAIN_TYPE_TUNDRA_HILLS, true, false);
+                    else
+                        self:TerraformHex(h, i, TerraformType[1], g_TERRAIN_TYPE_TUNDRA, true, false);
+                    end
+                end
+            end
+            i = i + 1
+        end
+    end
 end
 
 
