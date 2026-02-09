@@ -372,8 +372,8 @@ function CivilizationAssignSpawn:GetValidSpawnsInHexList(BBM_HexMap, listHex)
                 elseif self.IsCoastalBias == false and (hex.IsFreshWater or hex.IsCoastal) and hex:IsTundraLand() == false then
                     table.insert(validTiles, hex);
                 end
-            elseif self.IsTundraBias and hex:IsTundraLand() and hex.IsFreshWater then
-                table.insert(validTiles, hex);
+            elseif self.IsTundraBias and hex:IsTundraLand() and (hex.IsFreshWater or (hex.IsCoastal and self.IsCoastalBias)) then
+                    table.insert(validTiles, hex);
             --elseif self.IsDesertBias and hex:IsDesertLand() and hex.IsFreshWater then
             elseif self.IsDesertBias  and self:FindDesertBiasV2(hex) then
                 table.insert(validTiles, hex);
@@ -681,13 +681,18 @@ function CivilizationAssignSpawn:ComputeHexScoreCiv(hex)
     end
     -------------------
     -- 5 - Malus scoring to discourage this spawn unless this is the last option
-    -- Tundra : have full ring1 + half ring 2 
+    -- Tundra : have full ring1 + half ring 2 and have less snow in rang3
     local tundraMalus = 0
     if self.IsTundraBias then
         local nonTundraR1 = false
         for _, h in ipairs(hex.AllRing6Map[1]) do
             if h:IsWater() == false and h:IsTundraLand() == false and h:IsSnowLand() == false then
                 score = score - 20
+            end
+        end
+        for _, h in ipairs(hex.AllRing6Map[3]) do
+            if h:IsSnowLand() then
+                score = score - 10
             end
         end
     end
