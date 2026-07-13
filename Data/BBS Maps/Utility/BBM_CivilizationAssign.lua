@@ -1158,7 +1158,9 @@ function CivilizationAssignSpawn:IsBiasRespected(hex, hexMap)
                     if i <= 2 and hring.FeatureType == bias.Value then
                         if self.IsJungleBias and bias.Value == g_FEATURE_JUNGLE then
                             countJungle = countJungle + 1;
-                            if countJungle > 2 then
+                            -- Tier 越小越严格：T1=5, T2=3, T3=2, T4+=1
+                            local jungleThreshold = math.max(1, 6 - bias.Tier * 2);
+                            if countJungle >= jungleThreshold then
                                 jungleFound = true;
                                 isOneOfBiasRespected = true;
                             end
